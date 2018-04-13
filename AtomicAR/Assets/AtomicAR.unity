@@ -156,6 +156,11 @@ Prefab:
       propertyPath: m_Name
       value: AtomPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 54945479803345814, guid: 8f2dd5de1e05b47aa881c4adacdd4873,
+        type: 2}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8f2dd5de1e05b47aa881c4adacdd4873, type: 2}
   m_IsPrefabParent: 0
