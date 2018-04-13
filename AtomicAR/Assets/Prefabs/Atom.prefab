@@ -907,7 +907,7 @@ Animator:
   m_GameObject: {fileID: 1225955613310094}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 01eef5b7bc4644931a48b8879b9f7250, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3f236369da234499c8405fcd745c29f3, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -923,7 +923,7 @@ Animation:
   m_GameObject: {fileID: 1225955613310094}
   m_Enabled: 1
   serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 4c490467b5cc7412281723436bc31b55, type: 2}
+  m_Animation: {fileID: 7400000, guid: 48b4c6520d0c7448491056f8a46c8596, type: 2}
   m_Animations: []
   m_WrapMode: 0
   m_PlayAutomatically: 1

@@ -152,11 +152,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 95186635278890366, guid: 8f2dd5de1e05b47aa881c4adacdd4873,
-        type: 2}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: c3fba3f1f3bcf4e5f8c10a07a1e36df6, type: 2}
     - target: {fileID: 1230055735759748, guid: 8f2dd5de1e05b47aa881c4adacdd4873, type: 2}
       propertyPath: m_Name
       value: AtomPrefab
@@ -404,7 +399,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 547546290}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &938553898
 MonoBehaviour:
@@ -622,7 +617,7 @@ Transform:
   m_LocalScale: {x: 0.10026103, y: 0.100261025, z: 0.100261025}
   m_Children: []
   m_Father: {fileID: 547546290}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1978103608
 MeshRenderer:
@@ -706,8 +701,8 @@ Transform:
   m_Children:
   - {fileID: 95544443}
   - {fileID: 724043539}
-  m_Father: {fileID: 547546290}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2125832908
 Prefab:
