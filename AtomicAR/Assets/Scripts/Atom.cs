@@ -12,6 +12,8 @@ public class Atom : MonoBehaviour
 	public int numberElectrons = 0;
 	public Vector3 lastPosition;
 	public Vector3 mergeTarget;
+	public bool isDragged = false;
+	public Vector3 oldPosition = new Vector3();
 
 	//state variables
 	public bool isMerged;
@@ -27,30 +29,34 @@ public class Atom : MonoBehaviour
 	//other atoms
 	private List<Atom> mergeAtoms;
 
-	private Element element;
+	private ElementCreator elementCreator;
 	float speed = 0.5f;
 	float step;
 
 	// Use this for initialization
 	void Start ()
 	{
-
 		renderChilds = this.transform.Find ("Ring/Electrons").GetComponentsInChildren<Renderer> ();
 		ring = this.transform.Find ("Ring");
 		core = this.transform.Find ("Core");
 		label.text = name;
 		drawElectrons (numberElectrons);
 		mergeAtoms = new List<Atom> ();
-		element = gameObject.GetComponent<Element> ();
-
+		elementCreator = gameObject.GetComponent<ElementCreator> ();
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
+		isDragged = false;
+
+		if (oldPosition != transform.position) {
+			isDragged = true;
+		}
+
+		oldPosition = transform.position;
 
 		if (performMerge) {
-			//Debug.Log ("Merge!");
 			merge ();
 		}
 
@@ -59,7 +65,7 @@ public class Atom : MonoBehaviour
 		}
 
 		if (Input.GetKeyDown (KeyCode.S)) {
-			element.splitElement ();
+			elementCreator.splitElement ();
 		}
 		
 	}
@@ -74,14 +80,13 @@ public class Atom : MonoBehaviour
 	void OnTriggerEnter (Collider collider)
 	{
 
-		if (collider.transform.tag == "Atom") {
+		if (collider.transform.tag == "Atom" && isDragged) {
 			Atom atom = collider.gameObject.GetComponent<Atom> ();
 			if (!mergeAtoms.Contains (atom)) {
 				mergeAtoms.Add (atom);
 				Debug.Log ("Atom added to list: " + mergeAtoms.Count);
 			}
 			if (electronsMatch () && !isMerged) {
-				Debug.Log ("Can be merged!");
 				performMerge = true;
 				setColliderStatus (colliderStatus = false);
 				atom.lastPosition = transform.position;
@@ -91,7 +96,7 @@ public class Atom : MonoBehaviour
 
 	void OnTriggerExit (Collider collision)
 	{
-		if (collision.transform.tag == "Atom") {
+		if (collision.transform.tag == "Atom" && isDragged) {
 			Atom atom = (Atom)collision.gameObject.GetComponent<Atom> ();
 			if (mergeAtoms.Contains (atom)) {
 				mergeAtoms.Remove (atom);
@@ -103,16 +108,11 @@ public class Atom : MonoBehaviour
 	void OnCollisionEnter (Collision collider)
 	{
 		if (collider.transform.tag == "Atom") {
-
-			Debug.Log ("Collision!");
-
 		}
-			
 	}
 
 	bool electronsMatch ()
 	{
-
 		int electrons = numberElectrons;
 
 		foreach (Atom atom in mergeAtoms) {
@@ -124,14 +124,11 @@ public class Atom : MonoBehaviour
 
 	void merge ()
 	{
-
-		Debug.Log("Mergestep");
 		mergeTarget = transform.position;
 		int numberAtoms = 1;
 		setRing (false);
 
 		foreach (Atom atom in mergeAtoms) {
-			//atom.GetComponent<Rigidbody> ().isKinematic = true;
 			mergeTarget += atom.transform.position;
 			numberAtoms++;
 			atom.isMerged = true;
@@ -166,14 +163,14 @@ public class Atom : MonoBehaviour
 		transform.position = Vector3.MoveTowards (transform.position, mergeTarget, step);
 
 		if (pointReached (transform.position, mergeTarget)) {
-
 			Debug.Log ("Point reached!");
 			performMerge = false;
 			mergeAtoms.Add (this);
 
-			element.createSymbol (mergeAtoms, mergeTarget);
+			if (isDragged) {
+				elementCreator.createSymbol (mergeAtoms, mergeTarget);
+			}
 		}
-
 	}
 
 	public void moveAway ()
@@ -235,9 +232,16 @@ public class Atom : MonoBehaviour
 	}
 
 	public void setRing(bool active){
-		Debug.Log ("Number electrons: " + numberElectrons);
 		ring.gameObject.SetActive (active);
 		drawElectrons (numberElectrons);
+	}
+
+	public void setIsDragged(bool active){
+		isDragged = active;
+	}
+
+	public bool getIsDragged(){
+		return isDragged;
 	}
 
 }

@@ -26,6 +26,7 @@ public class DragAtoms : MonoBehaviour
 			Ray ray = Camera.main.ScreenPointToRay (pos); 
 			if (Physics.Raycast (ray, out hit) && (hit.collider.tag == "Atom")) {
 				atom = hit.transform;
+				atom.gameObject.GetComponent<Atom> ().setIsDragged (true);
 				dragging = true;
 			}
 		} else if (dragging && touch.phase == TouchPhase.Moved) {
@@ -36,6 +37,8 @@ public class DragAtoms : MonoBehaviour
 				atom.position = ray.GetPoint (distance);
 				atom.position = new Vector3 (atom.position.x, atom.position.y + height, atom.position.z);
 			}
+		} else {
+			atom.gameObject.GetComponent<Atom> ().setIsDragged (false);
 		}
 	}
 }

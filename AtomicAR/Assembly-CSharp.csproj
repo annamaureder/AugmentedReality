@@ -91,6 +91,7 @@
      <Compile Include="Assets\Scripts\AtomCreator.cs" />
      <Compile Include="Assets\Scripts\DragAtoms.cs" />
      <Compile Include="Assets\Scripts\Element.cs" />
+     <Compile Include="Assets\Scripts\ElementCreator.cs" />
      <Compile Include="Assets\Vuforia\Scripts\BackgroundPlaneBehaviour.cs" />
      <Compile Include="Assets\Vuforia\Scripts\ButtonBehaviour.cs" />
      <Compile Include="Assets\Vuforia\Scripts\ButtonBehaviour2.cs" />
