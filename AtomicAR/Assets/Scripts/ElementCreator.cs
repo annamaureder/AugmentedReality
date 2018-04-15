@@ -8,6 +8,7 @@ public class ElementCreator : MonoBehaviour
 	public GameObject H2Oprefab;
 	public GameObject H2prefab;
 	public GameObject NaClprefab;
+	public GameObject NaOHprefab;
 	public GameObject HClprefab;
 
 	Vector3 targetPosition;
@@ -49,52 +50,43 @@ public class ElementCreator : MonoBehaviour
 	GameObject getPrefab ()
 	{
 
-		if(containsExactly(new string[] {"O", "H", "H"})){
+		if(containsExactly(new List<string>{"O", "H", "H"})){
 			return H2Oprefab;
 		}
-		else if(containsExactly(new string[] {"H", "Cl"})){
+		else if(containsExactly(new List<string>{"H", "Cl"})){
 			return HClprefab;
 		}
-		else if(containsExactly(new string[] {"Na", "Cl"})){
+		else if(containsExactly(new List<string>{"H", "Na", "O"})){
+			return NaOHprefab;
+		}
+			else if(containsExactly(new List<string>{"Na", "Cl"})){
 			return NaClprefab;
 		}
-		else if(containsExactly(new string[] {"H", "H"})){
+			else if(containsExactly(new List<string>{"H", "H"})){
 			return H2prefab;
 		}
 			
 		return null;	
 	}
 
-	private bool containsExactly(string[] atomLetters){
+	private bool containsExactly(List<string> atomLetters){
 
-		if (atomLetters.Length != atoms.Count) {
+		if (atomLetters.Count != atoms.Count) {
 			return false;
 		}
-
-		List<Atom> copyAtoms = new List <Atom>(atoms);
-
-		int found = 0;
-
-		foreach (string letter in atomLetters) {
-			foreach(Atom atom in atoms){
-				if (letter.Equals (atom.label.text)) {
-					Debug.Log ("Letter found for " + letter + ": " + atom.label.text);
-					copyAtoms.Remove (atom);
-					found++;
-					Debug.Log ("Number of atoms: " + copyAtoms.Count);
-					break;
-				} else {
-					Debug.Log (letter + " could not be matched to " + atom.label.text);
+			
+		foreach (var atom in atoms) {
+			for (int i = 0; i < atomLetters.Count; ++i) {
+				if (atomLetters[i].Equals (atom.label.text)) {
+					atomLetters.RemoveAt (i);
 				}
 			}
 		}
-
-		if (atoms.Count!=found) {
-			Debug.Log ("Number of items in list left: " + copyAtoms.Count);
-			return false;
+		if (atomLetters.Count == 0) {
+			return true;
 		}
 
-		return true;
+		return false;
 
 	}
 
