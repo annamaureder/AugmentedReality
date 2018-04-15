@@ -16,7 +16,7 @@ public class Atom : MonoBehaviour
 	public Vector3 mergeTarget;
 	public Vector3 threshold;
 	public bool isDragged = false;
-	public float t = 1.05f;
+	public float t = 1.2f;
 	public Vector3 oldPosition = new Vector3(0.0f, 0.0f, 0.0f);
 
 	//state variables
@@ -256,9 +256,12 @@ public class Atom : MonoBehaviour
 	{
 		split = active;
 		transform.position = elementPosition;
+		mergeVector.Scale (new Vector3 (t, t, t));
 		moveDirection = elementPosition - mergeVector;
+		moveDirection.y = 0.15f;
 		Debug.Log("Merge vector: " + mergeVector);
-		moveDirection.Scale (new Vector3 (t, 1, t));
+		Debug.Log ("elementPosition: " + elementPosition);
+		Debug.Log ("moveDirection: " + moveDirection);
 	}
 
 	private bool pointReached (Vector3 v1, Vector3 v2)
