@@ -17,21 +17,24 @@ public class AtomCreator : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+		if (Platform.isBlocked()) {
+			return;
+		}
 
 		if (Input.GetKeyDown (KeyCode.H)) {
 			createAtom ("H", 1, new Color(0,0,0));
 		}
 
 		if (Input.GetKeyDown (KeyCode.O)) {
-			createAtom ("O", 6, new Color(0,0,0));
+			createAtom ("O", 8, new Color(0,0,0));
 		}
 
 		if (Input.GetKeyDown (KeyCode.N)) {
-			createAtom ("Na", 1, new Color(0,0,0));
+			createAtom ("Na", 11, new Color(0,0,0));
 		}
 
 		if (Input.GetKeyDown (KeyCode.C)) {
-			createAtom ("Cl", 7, new Color(0,0,0));
+			createAtom ("Cl", 17, new Color(0,0,0));
 		}
 			
 		if (Input.touchCount != 1) {
@@ -54,11 +57,11 @@ public class AtomCreator : MonoBehaviour
 				if (tag == "H") {
 					createAtom ("H", 1, color);
 				} else if (tag == "O") {
-					createAtom ("O", 6, color);
+					createAtom ("O", 8, color);
 				} else if (tag == "Na") {
-					createAtom ("Na", 1, color);
+					createAtom ("Na", 11, color);
 				} else if (tag == "Cl") {
-					createAtom ("Cl", 7, color);
+					createAtom ("Cl", 17, color);
 				}
 			} 
 

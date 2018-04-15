@@ -10,6 +10,7 @@ public class Atom : MonoBehaviour
 	public Text label;
 	public string name = "Atom";
 	public int numberElectrons = 0;
+	private int outherElectrons = 0;
 	public Color color;
 	public Vector3 mergeVector;
 	public Vector3 mergeTarget;
@@ -28,7 +29,7 @@ public class Atom : MonoBehaviour
 	private Renderer[] renderChilds;
 	private Transform ring;
 	private Transform core;
-	private Vector3 elementPosition;
+	Vector3 moveDirection; 
 
 	//other atoms
 	private List<Atom> mergeAtoms;
@@ -40,12 +41,20 @@ public class Atom : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+
+		if (numberElectrons <= 2) {
+			outherElectrons = numberElectrons;
+		} else {
+			outherElectrons = (numberElectrons -2) % 8;
+			Debug.Log (outherElectrons);
+		}
+
 		renderChilds = this.transform.Find ("Ring/Electrons").GetComponentsInChildren<Renderer> ();
 		ring = this.transform.Find ("Ring");
 		core = this.transform.Find ("Core");
 		core.GetComponent<Renderer> ().material.color = color;
 		label.text = name;
-		drawElectrons (numberElectrons);
+		drawElectrons (outherElectrons);
 		mergeAtoms = new List<Atom> ();
 		elementCreator = gameObject.GetComponent<ElementCreator> ();
 		mergeVector = transform.position;
@@ -72,9 +81,10 @@ public class Atom : MonoBehaviour
 		}
 
 		if (Input.GetKeyDown (KeyCode.S)) {
-			elementCreator.splitElement ();
+			if (elementCreator.getElement() != null) {
+				elementCreator.getElement ().GetComponent<Element> ().splitElement ();
+			}
 		}
-		
 	}
 
 	public void setVariables (string name, int numberElectrons, Color color)
@@ -124,13 +134,19 @@ public class Atom : MonoBehaviour
 
 	bool electronsMatch ()
 	{
-		int electrons = numberElectrons;
+		int electrons = outherElectrons;
+		int total = numberElectrons;
 
 		foreach (Atom atom in mergeAtoms) {
-			electrons += atom.numberElectrons;
+			electrons += atom.outherElectrons;
+			total += atom.numberElectrons;
+		}
+
+		if (electrons == 2 && total == 2) {
+			return true;
 		}
 			
-		return electrons == 8 || electrons == 2;
+		return electrons == 8;
 	}
 
 	void merge ()
@@ -186,8 +202,6 @@ public class Atom : MonoBehaviour
 	public void moveAway ()
 	{
 		step = speed * Time.deltaTime;
-		Vector3 moveDirection = (elementPosition - mergeVector);
-		moveDirection.Scale (new Vector3 (t, t, t));
 		transform.position = Vector3.MoveTowards (transform.position, moveDirection, step);
 
 		if (pointReached(transform.position, moveDirection)) {
@@ -241,7 +255,10 @@ public class Atom : MonoBehaviour
 	public void setMoveAway (bool active, Vector3 elementPosition)
 	{
 		split = active;
-		this.elementPosition = elementPosition;
+		transform.position = elementPosition;
+		moveDirection = elementPosition - mergeVector;
+		Debug.Log("Merge vector: " + mergeVector);
+		moveDirection.Scale (new Vector3 (t, 1, t));
 	}
 
 	private bool pointReached (Vector3 v1, Vector3 v2)
@@ -251,7 +268,13 @@ public class Atom : MonoBehaviour
 
 	public void setRing(bool active){
 		ring.gameObject.SetActive (active);
-		drawElectrons (numberElectrons);
+		drawElectrons (outherElectrons);
+	}
+
+	public void setVisible (bool active)
+	{
+		setRenderer (active);
+		label.enabled = active;
 	}
 
 	public void setIsDragged(bool active){

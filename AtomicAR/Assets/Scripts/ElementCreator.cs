@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class ElementCreator : MonoBehaviour
 {
-
-
 	private GameObject element;
 	public GameObject H2Oprefab;
 	public GameObject H2prefab;
 	public GameObject NaClprefab;
-	private int electrons = 0;
 
-	List<Atom> atoms;
 	Vector3 targetPosition;
+	List<Atom> atoms;
 
 	// Use this for initialization
 	void Start ()
@@ -29,40 +26,24 @@ public class ElementCreator : MonoBehaviour
 
 	public void createSymbol (List<Atom> atoms, Vector3 targetPosition)
 	{
-
-		this.atoms = atoms;
 		this.targetPosition = targetPosition;
+		this.atoms = atoms;
 
-		setActive (false);
-
+		foreach (Atom atom in atoms) {
+			atom.setVisible (false);
+		}
+			
 		GameObject prefab = getPrefab ();	
 
 		if (prefab != null) {
 			Debug.Log ("Electrons in list: " + atoms.Count);
 			element = Instantiate (prefab, targetPosition, new Quaternion ());
-			element.GetComponent<Element> ().label.text = prefab.name;
+
+			Element e = element.GetComponent<Element> ();
+			e.label.text = prefab.name;
+			e.atoms = atoms;
 		}
 
-	}
-
-	public void splitElement ()
-	{
-
-		element.SetActive (false);
-		setActive (true);
-
-		foreach (Atom atom in atoms) {
-			atom.setMoveAway (true, transform.position);
-		}
-	}
-
-	void setActive (bool active)
-	{
-		foreach (Atom atom in atoms) {
-			electrons += atom.numberElectrons;
-			atom.setRenderer (active);
-			atom.label.enabled = active;
-		}
 	}
 
 	GameObject getPrefab ()
@@ -115,7 +96,11 @@ public class ElementCreator : MonoBehaviour
 		}
 
 		return true;
-		
+
+	}
+
+	public GameObject getElement(){
+		return element;
 	}
 
 }

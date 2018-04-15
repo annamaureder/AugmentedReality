@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Element : MonoBehaviour {
 
 	public Text label;
+	public List<Atom> atoms;
 
 	// Use this for initialization
 	void Start () {
@@ -17,6 +18,16 @@ public class Element : MonoBehaviour {
 		
 	}
 
+	public void splitElement ()
+	{
+		foreach (Atom atom in atoms) {
+			atom.setVisible (true);
+			atom.setMoveAway (true, this.gameObject.transform.position);
+		}
+
+		Destroy (this.gameObject);
+	}
+		
 	public string toString(){
 		return name;
 	}

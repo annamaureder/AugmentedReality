@@ -90,6 +90,7 @@
      <Compile Include="Assets\Scripts\Atom.cs" />
      <Compile Include="Assets\Scripts\AtomCreator.cs" />
      <Compile Include="Assets\Scripts\DragAtoms.cs" />
+     <Compile Include="Assets\Scripts\DragElements.cs" />
      <Compile Include="Assets\Scripts\Element.cs" />
      <Compile Include="Assets\Scripts\ElementCreator.cs" />
      <Compile Include="Assets\Scripts\Platform.cs" />
