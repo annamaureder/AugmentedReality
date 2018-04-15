@@ -12,8 +12,9 @@ public class Atom : MonoBehaviour
 	public int numberElectrons = 0;
 	public Vector3 lastPosition;
 	public Vector3 mergeTarget;
+	public Vector3 threshold;
 	public bool isDragged = false;
-	public Vector3 oldPosition = new Vector3();
+	public Vector3 oldPosition = new Vector3(0.0f, 0.0f, 0.0f);
 
 	//state variables
 	public bool isMerged;
@@ -43,6 +44,7 @@ public class Atom : MonoBehaviour
 		drawElectrons (numberElectrons);
 		mergeAtoms = new List<Atom> ();
 		elementCreator = gameObject.GetComponent<ElementCreator> ();
+		lastPosition = transform.position;
 	}
 	
 	// Update is called once per frame
@@ -53,7 +55,8 @@ public class Atom : MonoBehaviour
 		if (oldPosition != transform.position) {
 			isDragged = true;
 		}
-
+			
+		threshold = (oldPosition - transform.position) * 5;
 		oldPosition = transform.position;
 
 		if (performMerge) {
@@ -88,8 +91,9 @@ public class Atom : MonoBehaviour
 			}
 			if (electronsMatch () && !isMerged) {
 				performMerge = true;
-				setColliderStatus (colliderStatus = false);
-				atom.lastPosition = transform.position;
+				setOtherColliders (colliderStatus = false);
+				setColliderStatus (false);
+				atom.lastPosition = new Vector3(transform.position.x + threshold.x, transform.position.y, transform.position.z + threshold.z);
 			}
 		}
 	}
@@ -127,12 +131,13 @@ public class Atom : MonoBehaviour
 		mergeTarget = transform.position;
 		int numberAtoms = 1;
 		setRing (false);
+		isMerged = true;
 
 		foreach (Atom atom in mergeAtoms) {
 			mergeTarget += atom.transform.position;
 			numberAtoms++;
 			atom.isMerged = true;
-			atom.ring.gameObject.GetComponent<Renderer> ().enabled = false;
+			atom.setRing (false);
 		}
 
 		mergeTarget /= numberAtoms;
@@ -183,22 +188,14 @@ public class Atom : MonoBehaviour
 			split = false;
 			setColliderStatus (true);
 			isMerged = false;
+			setRing (true);
 			mergeAtoms = new List<Atom> ();
 		}
 	}
 
 
-	void setColliderStatus (bool active)
-	{
-		
-		foreach (Collider c in GetComponents<Collider> ()) {
-			c.enabled = active;
-		}
-
-		foreach(Collider c in GetComponentsInChildren<Collider>()){
-			c.enabled = active;
-		}
-			
+	void setOtherColliders (bool active)
+	{			
 		foreach (Atom atom in mergeAtoms) {
 			foreach (Collider c in atom.GetComponents<Collider> ()) {
 				c.enabled = active;
@@ -208,6 +205,20 @@ public class Atom : MonoBehaviour
 			}
 		}
 	}
+
+	void setColliderStatus (bool active)
+	{
+
+		foreach (Collider c in GetComponents<Collider> ()) {
+			c.enabled = active;
+		}
+
+		foreach(Collider c in GetComponentsInChildren<Collider>()){
+			c.enabled = active;
+		}
+	}
+
+
 
 	public void setRenderer (bool active)
 	{

@@ -53,7 +53,6 @@ public class ElementCreator : MonoBehaviour
 
 		foreach (Atom atom in atoms) {
 			atom.setMoveAway (true);
-			atom.setRing (true);
 		}
 	}
 
