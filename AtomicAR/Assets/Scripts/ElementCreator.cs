@@ -10,6 +10,8 @@ public class ElementCreator : MonoBehaviour
 	public GameObject NaClprefab;
 	public GameObject NaOHprefab;
 	public GameObject HClprefab;
+	public GameObject Cl2prefab;
+	public GameObject O2prefab;
 
 	Vector3 targetPosition;
 	List<Atom> atoms;
@@ -50,26 +52,27 @@ public class ElementCreator : MonoBehaviour
 	GameObject getPrefab ()
 	{
 
-		if(containsExactly(new List<string>{"O", "H", "H"})){
+		if (containsExactly (new List<string>{ "O", "H", "H" })) {
 			return H2Oprefab;
-		}
-		else if(containsExactly(new List<string>{"H", "Cl"})){
+		} else if (containsExactly (new List<string>{ "H", "Cl" })) {
 			return HClprefab;
-		}
-		else if(containsExactly(new List<string>{"H", "Na", "O"})){
+		} else if (containsExactly (new List<string>{ "H", "Na", "O" })) {
 			return NaOHprefab;
-		}
-			else if(containsExactly(new List<string>{"Na", "Cl"})){
+		} else if (containsExactly (new List<string>{ "Na", "Cl" })) {
 			return NaClprefab;
-		}
-			else if(containsExactly(new List<string>{"H", "H"})){
+		} else if (containsExactly (new List<string>{ "H", "H" })) {
 			return H2prefab;
+		} else if (containsExactly (new List<string>{ "O", "O" })) {
+			return O2prefab;
+		} else if (containsExactly (new List<string>{ "Cl", "Cl" })) {
+			return Cl2prefab;
 		}
 			
 		return null;	
 	}
 
-	private bool containsExactly(List<string> atomLetters){
+	private bool containsExactly (List<string> atomLetters)
+	{
 
 		if (atomLetters.Count != atoms.Count) {
 			return false;
@@ -77,7 +80,7 @@ public class ElementCreator : MonoBehaviour
 			
 		foreach (var atom in atoms) {
 			for (int i = 0; i < atomLetters.Count; ++i) {
-				if (atomLetters[i].Equals (atom.label.text)) {
+				if (atomLetters [i].Equals (atom.label.text)) {
 					atomLetters.RemoveAt (i);
 				}
 			}
@@ -90,7 +93,8 @@ public class ElementCreator : MonoBehaviour
 
 	}
 
-	public GameObject getElement(){
+	public GameObject getElement ()
+	{
 		return element;
 	}
 

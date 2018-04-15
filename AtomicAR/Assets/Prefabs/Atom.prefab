@@ -1049,6 +1049,8 @@ MonoBehaviour:
   NaClprefab: {fileID: 1733846350804192, guid: efcb6959d0b9e4ae5b32bcb2cd8a3f09, type: 2}
   NaOHprefab: {fileID: 1170769880171704, guid: cb7203f97109d44afa855fa8c2d9a6e8, type: 2}
   HClprefab: {fileID: 1842480571686186, guid: ac0389731d74247b49213c9178f00e95, type: 2}
+  Cl2prefab: {fileID: 1513611009578414, guid: d28ecf95374c3428d8dbc7cb988b0a53, type: 2}
+  O2prefab: {fileID: 1870508018031608, guid: 2fc6d734e933a485585640519a6cdf4e, type: 2}
 --- !u!135 &135069696692766292
 SphereCollider:
   m_ObjectHideFlags: 1

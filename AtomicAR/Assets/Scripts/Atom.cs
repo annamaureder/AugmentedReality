@@ -16,8 +16,8 @@ public class Atom : MonoBehaviour
 	public Vector3 mergeTarget;
 	public Vector3 threshold;
 	public bool isDragged = false;
-	public float t = 1.2f;
-	public Vector3 oldPosition = new Vector3(0.0f, 0.0f, 0.0f);
+	public float t = 1.3f;
+	public Vector3 oldPosition = new Vector3 (0.0f, 0.0f, 0.0f);
 
 	//state variables
 	public bool isMerged;
@@ -29,7 +29,7 @@ public class Atom : MonoBehaviour
 	private Renderer[] renderChilds;
 	private Transform ring;
 	private Transform core;
-	Vector3 moveDirection; 
+	Vector3 moveDirection;
 
 	//other atoms
 	private List<Atom> mergeAtoms;
@@ -45,7 +45,7 @@ public class Atom : MonoBehaviour
 		if (numberElectrons <= 2) {
 			outherElectrons = numberElectrons;
 		} else {
-			outherElectrons = (numberElectrons -2) % 8;
+			outherElectrons = (numberElectrons - 2) % 8;
 			Debug.Log (outherElectrons);
 		}
 
@@ -81,7 +81,7 @@ public class Atom : MonoBehaviour
 		}
 
 		if (Input.GetKeyDown (KeyCode.S)) {
-			if (elementCreator.getElement() != null) {
+			if (elementCreator.getElement () != null) {
 				elementCreator.getElement ().GetComponent<Element> ().splitElement ();
 			}
 		}
@@ -134,8 +134,13 @@ public class Atom : MonoBehaviour
 
 	bool electronsMatch ()
 	{
+
 		int electrons = outherElectrons;
 		int total = numberElectrons;
+
+		if (mergeAtoms.Count == 1 && mergeAtoms [0].numberElectrons == total && electrons >= 6) {
+			return true;
+		}
 
 		foreach (Atom atom in mergeAtoms) {
 			electrons += atom.outherElectrons;
@@ -204,7 +209,7 @@ public class Atom : MonoBehaviour
 		step = speed * Time.deltaTime;
 		transform.position = Vector3.MoveTowards (transform.position, moveDirection, step);
 
-		if (pointReached(transform.position, moveDirection)) {
+		if (pointReached (transform.position, moveDirection)) {
 			split = false;
 			setColliderStatus (true);
 			isMerged = false;
@@ -233,7 +238,7 @@ public class Atom : MonoBehaviour
 			c.enabled = active;
 		}
 
-		foreach(Collider c in GetComponentsInChildren<Collider>()){
+		foreach (Collider c in GetComponentsInChildren<Collider>()) {
 			c.enabled = active;
 		}
 	}
@@ -259,7 +264,7 @@ public class Atom : MonoBehaviour
 		mergeVector.Scale (new Vector3 (t, t, t));
 		moveDirection = elementPosition - mergeVector;
 		moveDirection.y = 0.15f;
-		Debug.Log("Merge vector: " + mergeVector);
+		Debug.Log ("Merge vector: " + mergeVector);
 		Debug.Log ("elementPosition: " + elementPosition);
 		Debug.Log ("moveDirection: " + moveDirection);
 	}
@@ -269,7 +274,8 @@ public class Atom : MonoBehaviour
 		return Vector3.Distance (v1, v2) < 0.03f;
 	}
 
-	public void setRing(bool active){
+	public void setRing (bool active)
+	{
 		ring.gameObject.SetActive (active);
 		drawElectrons (outherElectrons);
 	}
@@ -280,11 +286,13 @@ public class Atom : MonoBehaviour
 		label.enabled = active;
 	}
 
-	public void setIsDragged(bool active){
+	public void setIsDragged (bool active)
+	{
 		isDragged = active;
 	}
 
-	public bool getIsDragged(){
+	public bool getIsDragged ()
+	{
 		return isDragged;
 	}
 
