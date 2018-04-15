@@ -52,7 +52,7 @@ public class ElementCreator : MonoBehaviour
 		setActive (true);
 
 		foreach (Atom atom in atoms) {
-			atom.setMoveAway (true);
+			atom.setMoveAway (true, transform.position);
 		}
 	}
 

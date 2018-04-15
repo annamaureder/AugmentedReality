@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AtomCreator : MonoBehaviour
 {
-
 	public GameObject atomPrefab;
 	private bool create;
 	private string tag;
@@ -20,19 +19,19 @@ public class AtomCreator : MonoBehaviour
 	{
 
 		if (Input.GetKeyDown (KeyCode.H)) {
-			createAtom ("H", 1);
+			createAtom ("H", 1, new Color(0,0,0));
 		}
 
 		if (Input.GetKeyDown (KeyCode.O)) {
-			createAtom ("O", 6);
+			createAtom ("O", 6, new Color(0,0,0));
 		}
 
 		if (Input.GetKeyDown (KeyCode.N)) {
-			createAtom ("Na", 1);
+			createAtom ("Na", 1, new Color(0,0,0));
 		}
 
 		if (Input.GetKeyDown (KeyCode.C)) {
-			createAtom ("Cl", 7);
+			createAtom ("Cl", 7, new Color(0,0,0));
 		}
 			
 		if (Input.touchCount != 1) {
@@ -46,37 +45,32 @@ public class AtomCreator : MonoBehaviour
 		if (touch.phase == TouchPhase.Began) {
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay (pos); 
-			if (Physics.Raycast (ray, out hit) && !Platform.isBlocked()) {
+			if (Physics.Raycast (ray, out hit) && !Platform.isBlocked ()) {
 
 				tag = hit.collider.tag;
+				Color color = hit.collider.gameObject.GetComponent<Renderer> ().material.color;
 				create = true;
 
 				if (tag == "H") {
-					createAtom ("H", 1);
+					createAtom ("H", 1, color);
+				} else if (tag == "O") {
+					createAtom ("O", 6, color);
+				} else if (tag == "Na") {
+					createAtom ("Na", 1, color);
+				} else if (tag == "Cl") {
+					createAtom ("Cl", 7, color);
 				}
-
-				else if (tag == "O") {
-					createAtom ("O", 6);
-				}
-
-				else if (tag == "Na") {
-					createAtom ("Na", 1);
-				}
-
-				else if (tag == "Cl") {
-					createAtom ("Cl", 7);
-				}
-			}
+			} 
 
 		} else if (create && touch.phase == TouchPhase.Ended) {
 			create = false;
 		}
 	}
 
-	void createAtom (string name, int electrons)
+	void createAtom (string name, int electrons, Color color)
 	{
 		GameObject atom = Instantiate (atomPrefab);
 		Atom myAtom = atom.GetComponent<Atom> ();
-		myAtom.setVariables (name, electrons);
+		myAtom.setVariables (name, electrons, color);
 	}
 }

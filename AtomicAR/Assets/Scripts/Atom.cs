@@ -10,10 +10,12 @@ public class Atom : MonoBehaviour
 	public Text label;
 	public string name = "Atom";
 	public int numberElectrons = 0;
-	public Vector3 lastPosition;
+	public Color color;
+	public Vector3 mergeVector;
 	public Vector3 mergeTarget;
 	public Vector3 threshold;
 	public bool isDragged = false;
+	public float t = 1.05f;
 	public Vector3 oldPosition = new Vector3(0.0f, 0.0f, 0.0f);
 
 	//state variables
@@ -26,6 +28,7 @@ public class Atom : MonoBehaviour
 	private Renderer[] renderChilds;
 	private Transform ring;
 	private Transform core;
+	private Vector3 elementPosition;
 
 	//other atoms
 	private List<Atom> mergeAtoms;
@@ -40,11 +43,12 @@ public class Atom : MonoBehaviour
 		renderChilds = this.transform.Find ("Ring/Electrons").GetComponentsInChildren<Renderer> ();
 		ring = this.transform.Find ("Ring");
 		core = this.transform.Find ("Core");
+		core.GetComponent<Renderer> ().material.color = color;
 		label.text = name;
 		drawElectrons (numberElectrons);
 		mergeAtoms = new List<Atom> ();
 		elementCreator = gameObject.GetComponent<ElementCreator> ();
-		lastPosition = transform.position;
+		mergeVector = transform.position;
 	}
 	
 	// Update is called once per frame
@@ -60,7 +64,7 @@ public class Atom : MonoBehaviour
 		oldPosition = transform.position;
 
 		if (performMerge) {
-			merge ();
+			moveTowards (mergeAtoms);
 		}
 
 		if (split) {
@@ -73,10 +77,11 @@ public class Atom : MonoBehaviour
 		
 	}
 
-	public void setVariables (string name, int numberElectrons)
+	public void setVariables (string name, int numberElectrons, Color color)
 	{
 		this.name = name;
 		this.numberElectrons = numberElectrons;
+		this.color = color;
 	}
 
 
@@ -90,10 +95,12 @@ public class Atom : MonoBehaviour
 				Debug.Log ("Atom added to list: " + mergeAtoms.Count);
 			}
 			if (electronsMatch () && !isMerged) {
+				merge ();
 				performMerge = true;
 				setOtherColliders (colliderStatus = false);
 				setColliderStatus (false);
-				atom.lastPosition = new Vector3(transform.position.x + threshold.x, transform.position.y, transform.position.z + threshold.z);
+				atom.mergeVector = mergeTarget - atom.transform.position;
+				mergeVector = mergeTarget - transform.position;
 			}
 		}
 	}
@@ -141,8 +148,6 @@ public class Atom : MonoBehaviour
 		}
 
 		mergeTarget /= numberAtoms;
-
-		moveTowards (mergeAtoms);
 	}
 
 	void drawElectrons (int numberElectrons)
@@ -181,10 +186,11 @@ public class Atom : MonoBehaviour
 	public void moveAway ()
 	{
 		step = speed * Time.deltaTime;
+		Vector3 moveDirection = (elementPosition - mergeVector);
+		moveDirection.Scale (new Vector3 (t, t, t));
+		transform.position = Vector3.MoveTowards (transform.position, moveDirection, step);
 
-		transform.position = Vector3.MoveTowards (transform.position, lastPosition, step);
-
-		if (pointReached(transform.position, lastPosition)) {
+		if (pointReached(transform.position, moveDirection)) {
 			split = false;
 			setColliderStatus (true);
 			isMerged = false;
@@ -232,9 +238,10 @@ public class Atom : MonoBehaviour
 		}
 	}
 
-	public void setMoveAway (bool active)
+	public void setMoveAway (bool active, Vector3 elementPosition)
 	{
 		split = active;
+		this.elementPosition = elementPosition;
 	}
 
 	private bool pointReached (Vector3 v1, Vector3 v2)
