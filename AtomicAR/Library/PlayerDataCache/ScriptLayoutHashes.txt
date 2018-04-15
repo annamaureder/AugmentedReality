@@ -17,7 +17,7 @@ ff05dcdf90651c3d98a9cad3df5e471e UnityEngine.Timeline.dll:UnityEngine.Timeline.C
 df374c01140c2d578bf70cbd60073d1d UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
 f8b19b97900ca06b9c1ad0eec4014aa2 Assembly-CSharp.dll:Lean.Touch.LeanFingerDown
 a9ceaad7d51aada88335b5bf9c0e71a4 Assembly-CSharp.dll:Vuforia.ReconstructionBehaviour
-00ba43a56082234134f7a326cb4a727c Assembly-CSharp.dll:.Atom
+9fbe86b3d7d7359baec468ed3c540790 Assembly-CSharp.dll:.Atom
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Vuforia.TurnOffBehaviour
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Vuforia.GLErrorHandler
 8c366d0d93a4f5e45097ef40b35dd82a Assembly-CSharp.dll:Lean.Touch.LeanFingerLine
@@ -205,7 +205,7 @@ e151305212b6d9dd07d68e464b461420 Assembly-CSharp.dll:Lean.Touch.LeanFingerTap
 75f17fb9bd4464dd934541ea4a00eaf3 Assembly-CSharp.dll:Lean.Touch.LeanTranslate
 d2a2bd333db22f480a8589e167314ecc Assembly-CSharp.dll:Vuforia.UserDefinedTargetBuildingBehaviour
 5652388a27686e3b4c5bbff6e0e7c256 Assembly-CSharp.dll:Lean.Touch.LeanFingerUp
-f4d8b0b2e8a36ad64fa931d9ad9487a7 Assembly-CSharp.dll:.ElementCreator
+298a1e3ecc9304f0ddb900056303ae17 Assembly-CSharp.dll:.ElementCreator
 d49c4dceabcd0f316458072a477aeae8 Assembly-CSharp.dll:Lean.Touch.LeanSpawn
 1599adf36a90c6dd91987c85a00ee885 Assembly-CSharp.dll:Lean.Touch.LeanFingerHeld
 05012a5c4e5496c7da7c6bf88a0eb92a Assembly-CSharp.dll:Lean.Touch.LeanPitchYawSmooth
@@ -213,3 +213,4 @@ c7b4e1cefa38e05c60ad69dee88481d8 Assembly-CSharp.dll:Lean.Touch.LeanSelectableRe
 7cac06ac0eaa7257b831c29e4455ce1b Assembly-CSharp.dll:Vuforia.VuforiaConfiguration
 cde3d7e3ff0e701e1a0d5183e2359434 Assembly-CSharp.dll:.Platform
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.DragElements
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.RotationElectrons

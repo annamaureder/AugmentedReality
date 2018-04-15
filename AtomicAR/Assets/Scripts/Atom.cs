@@ -8,15 +8,15 @@ public class Atom : MonoBehaviour
 
 	//properties of this atom
 	public Text label;
+	public Text numberLabel;
 	public string name = "Atom";
-	public int numberElectrons = 0;
-	private int outherElectrons = 0;
+	public int totalElectrons = 0;
+	private int boundingElectrons = 0;
 	public Color color;
 	public Vector3 mergeVector;
 	public Vector3 mergeTarget;
-	public Vector3 threshold;
 	public bool isDragged = false;
-	public float t = 1.3f;
+	public float t = 1.6f;
 	public Vector3 oldPosition = new Vector3 (0.0f, 0.0f, 0.0f);
 
 	//state variables
@@ -26,9 +26,8 @@ public class Atom : MonoBehaviour
 	private bool split;
 
 	//components of this atom
-	private Renderer[] renderChilds;
-	private Transform ring;
-	private Transform core;
+	private List<Renderer> rings = new List<Renderer>();
+	private Renderer core;
 	Vector3 moveDirection;
 
 	//other atoms
@@ -42,19 +41,26 @@ public class Atom : MonoBehaviour
 	void Start ()
 	{
 
-		if (numberElectrons <= 2) {
-			outherElectrons = numberElectrons;
+		if (totalElectrons <= 2) {
+			boundingElectrons = totalElectrons;
 		} else {
-			outherElectrons = (numberElectrons - 2) % 8;
-			Debug.Log (outherElectrons);
+			boundingElectrons = (totalElectrons - 2) % 8;
+			Debug.Log (boundingElectrons);
+		}
+			
+
+		foreach (var child in GetComponentsInChildren<Renderer>()) {
+			if (child.gameObject.name == "Ring") {
+				rings.Add (child);
+			} else if (child.gameObject.name == "Core") {
+				core = child;
+				core.GetComponent<Renderer> ().material.color = color;
+			}
 		}
 
-		renderChilds = this.transform.Find ("Ring/Electrons").GetComponentsInChildren<Renderer> ();
-		ring = this.transform.Find ("Ring");
-		core = this.transform.Find ("Core");
-		core.GetComponent<Renderer> ().material.color = color;
 		label.text = name;
-		drawElectrons (outherElectrons);
+		numberLabel.text = totalElectrons.ToString();
+		drawRings ();
 		mergeAtoms = new List<Atom> ();
 		elementCreator = gameObject.GetComponent<ElementCreator> ();
 		mergeVector = transform.position;
@@ -69,7 +75,6 @@ public class Atom : MonoBehaviour
 			isDragged = true;
 		}
 			
-		threshold = (oldPosition - transform.position) * 5;
 		oldPosition = transform.position;
 
 		if (performMerge) {
@@ -90,7 +95,7 @@ public class Atom : MonoBehaviour
 	public void setVariables (string name, int numberElectrons, Color color)
 	{
 		this.name = name;
-		this.numberElectrons = numberElectrons;
+		this.totalElectrons = numberElectrons;
 		this.color = color;
 	}
 
@@ -135,16 +140,16 @@ public class Atom : MonoBehaviour
 	bool electronsMatch ()
 	{
 
-		int electrons = outherElectrons;
-		int total = numberElectrons;
+		int electrons = boundingElectrons;
+		int total = totalElectrons;
 
-		if (mergeAtoms.Count == 1 && mergeAtoms [0].numberElectrons == total && electrons >= 6) {
+		if (mergeAtoms.Count == 1 && mergeAtoms [0].totalElectrons == total && electrons >= 6) {
 			return true;
 		}
 
 		foreach (Atom atom in mergeAtoms) {
-			electrons += atom.outherElectrons;
-			total += atom.numberElectrons;
+			electrons += atom.boundingElectrons;
+			total += atom.totalElectrons;
 		}
 
 		if (electrons == 2 && total == 2) {
@@ -158,28 +163,36 @@ public class Atom : MonoBehaviour
 	{
 		mergeTarget = transform.position;
 		int numberAtoms = 1;
-		setRing (false);
+		setRings (false);
 		isMerged = true;
 
 		foreach (Atom atom in mergeAtoms) {
 			mergeTarget += atom.transform.position;
 			numberAtoms++;
 			atom.isMerged = true;
-			atom.setRing (false);
+			atom.setRings (false);
 		}
 
 		mergeTarget /= numberAtoms;
 	}
 
-	void drawElectrons (int numberElectrons)
+	void drawRings ()
 	{
 
-		foreach (Renderer r in renderChilds) {
-			r.enabled = false;
+		int lastRing = (boundingElectrons + 1) / 2;
+
+		Debug.Log ("Childs: " + rings.Count);
+		Debug.Log ("Number rings: " + lastRing);
+
+		for (int i = 0; i < lastRing; i++) {
+			rings [i].enabled = true;
+			foreach (var electron in rings[i].GetComponentsInChildren<Renderer>()) {
+				electron.enabled = true;
+			}
 		}
 
-		for (int i = 1; i < numberElectrons + 1; i++) {
-			renderChilds [i].enabled = true;
+		if (boundingElectrons % 2 != 0) {
+			rings [lastRing-1].GetComponentsInChildren<Renderer> () [1].enabled = false;
 		}
 	}
 
@@ -213,7 +226,7 @@ public class Atom : MonoBehaviour
 			split = false;
 			setColliderStatus (true);
 			isMerged = false;
-			setRing (true);
+			setRings (true);
 			mergeAtoms = new List<Atom> ();
 		}
 	}
@@ -242,21 +255,7 @@ public class Atom : MonoBehaviour
 			c.enabled = active;
 		}
 	}
-
-
-
-	public void setRenderer (bool active)
-	{
-
-		foreach (Renderer r in GetComponents<Renderer> ()) {
-			r.enabled = active;
-		}
 		
-		foreach (Renderer r in GetComponentsInChildren<Renderer> ()) {
-			r.enabled = active;
-		}
-	}
-
 	public void setMoveAway (bool active, Vector3 elementPosition)
 	{
 		split = active;
@@ -274,18 +273,36 @@ public class Atom : MonoBehaviour
 		return Vector3.Distance (v1, v2) < 0.03f;
 	}
 
-	public void setRing (bool active)
+	private void setRings (bool active)
 	{
-		ring.gameObject.SetActive (active);
-		drawElectrons (outherElectrons);
+		if (active) {
+			drawRings ();
+			return;
+		}
+
+		foreach (var ring in rings) {
+			foreach (var electron in ring.GetComponentsInChildren<Renderer>()) {
+				electron.enabled = false;;
+			}
+			ring.enabled = false;
+		}
 	}
 
-	public void setVisible (bool active)
-	{
-		setRenderer (active);
+	private void setCore(bool active){
+		core.enabled = active;
+	}
+
+	private void setLabel(bool active){
 		label.enabled = active;
+		numberLabel.enabled = active;
 	}
 
+	public void setVisible(bool active){
+		setRings (active);
+		setCore (active);
+		setLabel (active);
+	}
+		
 	public void setIsDragged (bool active)
 	{
 		isDragged = active;
@@ -296,4 +313,7 @@ public class Atom : MonoBehaviour
 		return isDragged;
 	}
 
+	public List<Renderer> getRings(){
+		return rings;
+	}
 }
