@@ -8,6 +8,7 @@ public class ElementCreator : MonoBehaviour
 	public GameObject H2Oprefab;
 	public GameObject H2prefab;
 	public GameObject NaClprefab;
+	public GameObject HClprefab;
 
 	Vector3 targetPosition;
 	List<Atom> atoms;
@@ -36,7 +37,6 @@ public class ElementCreator : MonoBehaviour
 		GameObject prefab = getPrefab ();	
 
 		if (prefab != null) {
-			Debug.Log ("Electrons in list: " + atoms.Count);
 			element = Instantiate (prefab, targetPosition, new Quaternion ());
 
 			Element e = element.GetComponent<Element> ();
@@ -48,14 +48,18 @@ public class ElementCreator : MonoBehaviour
 
 	GameObject getPrefab ()
 	{
-		if(containsExactly(new string[] {"H", "H"})){
-			return H2prefab;
-		}
-		else if(containsExactly(new string[] {"O", "H", "H"})){
+
+		if(containsExactly(new string[] {"O", "H", "H"})){
 			return H2Oprefab;
+		}
+		else if(containsExactly(new string[] {"H", "Cl"})){
+			return HClprefab;
 		}
 		else if(containsExactly(new string[] {"Na", "Cl"})){
 			return NaClprefab;
+		}
+		else if(containsExactly(new string[] {"H", "H"})){
+			return H2prefab;
 		}
 			
 		return null;	
@@ -68,11 +72,6 @@ public class ElementCreator : MonoBehaviour
 		}
 
 		List<Atom> copyAtoms = new List <Atom>(atoms);
-
-		Debug.Log ("Number of atoms: " + copyAtoms.Count);
-		foreach (Atom atom in copyAtoms) {
-			Debug.Log ("List includes: " + atom.label.text);
-		}
 
 		int found = 0;
 

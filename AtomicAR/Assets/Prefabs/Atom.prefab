@@ -1047,6 +1047,7 @@ MonoBehaviour:
   H2Oprefab: {fileID: 1177319736935324, guid: dc5e1616e4aab44adb6332e6d521faf1, type: 2}
   H2prefab: {fileID: 1000713465596544, guid: 7db1bcece74554a22903681cff3b88cd, type: 2}
   NaClprefab: {fileID: 1733846350804192, guid: efcb6959d0b9e4ae5b32bcb2cd8a3f09, type: 2}
+  HClprefab: {fileID: 1842480571686186, guid: ac0389731d74247b49213c9178f00e95, type: 2}
 --- !u!135 &135069696692766292
 SphereCollider:
   m_ObjectHideFlags: 1

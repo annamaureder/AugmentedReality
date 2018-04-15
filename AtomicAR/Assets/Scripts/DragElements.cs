@@ -31,11 +31,11 @@ public class DragElements : MonoBehaviour {
 
 		if (touch.phase == TouchPhase.Began) {
 
-			/*if (counter < 0.5f) {
+			if (counter < 0.5f) {
 				element.GetComponent<Element> ().splitElement ();
 			}
 
-			counter = 0.0f;*/
+			counter = 0.0f;
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay (pos); 
 			if (Physics.Raycast (ray, out hit) && (hit.collider.tag == "Element")) {
