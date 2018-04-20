@@ -7,6 +7,7 @@ public class Atom : MonoBehaviour
 {
 
 	//properties of this atom
+	AudioSource[] sources;
 	public Text label;
 	public Text numberLabel;
 	public string name = "Atom";
@@ -16,7 +17,7 @@ public class Atom : MonoBehaviour
 	public Vector3 mergeVector;
 	public Vector3 mergeTarget;
 	public bool isDragged = false;
-	public float t = 1.6f;
+	private float t = 1.5f;
 	public Vector3 oldPosition = new Vector3 (0.0f, 0.0f, 0.0f);
 
 	//state variables
@@ -40,6 +41,9 @@ public class Atom : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+
+
+		sources = GetComponents<AudioSource>();
 
 		if (totalElectrons <= 2) {
 			boundingElectrons = totalElectrons;
@@ -161,10 +165,11 @@ public class Atom : MonoBehaviour
 
 	void merge ()
 	{
-		mergeTarget = transform.position;
-		int numberAtoms = 1;
 		setRings (false);
 		isMerged = true;
+
+		int numberAtoms = 1;
+		mergeTarget = transform.position;
 
 		foreach (Atom atom in mergeAtoms) {
 			mergeTarget += atom.transform.position;
@@ -207,12 +212,12 @@ public class Atom : MonoBehaviour
 		transform.position = Vector3.MoveTowards (transform.position, mergeTarget, step);
 
 		if (pointReached (transform.position, mergeTarget)) {
-			Debug.Log ("Point reached!");
 			performMerge = false;
 			mergeAtoms.Add (this);
 
 			if (isDragged) {
 				elementCreator.createSymbol (mergeAtoms, mergeTarget);
+				sources[0].Play ();
 			}
 		}
 	}
@@ -258,8 +263,10 @@ public class Atom : MonoBehaviour
 		
 	public void setMoveAway (bool active, Vector3 elementPosition)
 	{
+		sources[1].Play ();
 		split = active;
 		transform.position = elementPosition;
+		Debug.Log ("Merge Vector original: " + mergeVector);
 		mergeVector.Scale (new Vector3 (t, t, t));
 		moveDirection = elementPosition - mergeVector;
 		moveDirection.y = 0.15f;
@@ -270,7 +277,7 @@ public class Atom : MonoBehaviour
 
 	private bool pointReached (Vector3 v1, Vector3 v2)
 	{
-		return Vector3.Distance (v1, v2) < 0.03f;
+		return Vector3.Distance (v1, v2) < 0.01f;
 	}
 
 	private void setRings (bool active)

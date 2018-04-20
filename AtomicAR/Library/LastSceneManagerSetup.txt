@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/AtomicAR.unity
+- path: Assets/Scenes/AtomicAR.unity
   isLoaded: 1
   isActive: 1

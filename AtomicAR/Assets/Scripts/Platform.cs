@@ -33,7 +33,7 @@ public class Platform : MonoBehaviour
 	void OnTriggerEnter (Collider collider)
 	{
 
-		if (collider.transform.tag == "Atom") {
+		if (collider.transform.tag == "Atom" || collider.transform.tag == "Element") {
 			Debug.Log ("Platform blocked!");
 			blocked = true;
 			this.GetComponent<Renderer> ().material = red;
@@ -46,7 +46,7 @@ public class Platform : MonoBehaviour
 
 	void OnTriggerExit (Collider collision)
 	{
-		if (collision.transform.tag == "Atom") {
+		if (collision.transform.tag == "Atom" || collision.transform.tag == "Element") {
 			Debug.Log ("Platform free!");
 			blocked = false;
 			this.GetComponent<Renderer> ().material = green;

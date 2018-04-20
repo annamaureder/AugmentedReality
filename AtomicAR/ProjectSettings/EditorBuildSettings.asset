@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/HelloWorld.unity
-    guid: eb98a42a7e8e7491998e6496393d1908
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/AtomicAR.unity
+    path: Assets/Scenes/UI.unity
+    guid: e5b4e4ebf07874ceeabe278b04871000
+  - enabled: 1
+    path: Assets/Scenes/AtomicAR.unity
     guid: 7bd6eaed515aa475693236b60a69e52b

@@ -1,8 +1,14 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/DragAtoms.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ButtonPressed.cs">
     <Files>
-      <File FileName="Assets/Scripts/DragAtoms.cs" Line="25" Column="19" />
+      <File FileName="Assets/Scripts/DragAtoms.cs" Line="38" Column="66" />
+      <File FileName="Assets/Scripts/Platform.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/RotationElectrons.cs" Line="29" Column="1" />
+      <File FileName="Assets/Scripts/Atom.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/ElementCreator.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Element.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/ButtonPressed.cs" Line="20" Column="32" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

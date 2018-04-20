@@ -8,7 +8,7 @@ public class DragAtoms : MonoBehaviour
 	private bool dragging = false;
 	private Transform atom;
 	private Vector3 pos3D;
-	private float planeY = 0;
+	private float planeY = 0.15f;
 	private float height = 0.15f;
 
 	void Update ()
@@ -35,7 +35,7 @@ public class DragAtoms : MonoBehaviour
 			float distance;
 			if (plane.Raycast (ray, out distance)) {
 				atom.position = ray.GetPoint (distance);
-				atom.position = new Vector3 (atom.position.x, atom.position.y + height, atom.position.z);
+				atom.position = new Vector3 (atom.position.x, atom.position.y, atom.position.z);
 			}
 		} else {
 			atom.gameObject.GetComponent<Atom> ().setIsDragged (false);

@@ -89,6 +89,7 @@
      <Compile Include="Assets\LeanTouch\Scripts\LeanTouch.cs" />
      <Compile Include="Assets\Scripts\Atom.cs" />
      <Compile Include="Assets\Scripts\AtomCreator.cs" />
+     <Compile Include="Assets\Scripts\ButtonPressed.cs" />
      <Compile Include="Assets\Scripts\DragAtoms.cs" />
      <Compile Include="Assets\Scripts\DragElements.cs" />
      <Compile Include="Assets\Scripts\Element.cs" />

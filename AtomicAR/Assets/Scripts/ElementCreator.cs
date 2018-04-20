@@ -12,6 +12,7 @@ public class ElementCreator : MonoBehaviour
 	public GameObject HClprefab;
 	public GameObject Cl2prefab;
 	public GameObject O2prefab;
+	public GameObject Na2Oprefab;
 
 	Vector3 targetPosition;
 	List<Atom> atoms;
@@ -66,6 +67,8 @@ public class ElementCreator : MonoBehaviour
 			return O2prefab;
 		} else if (containsExactly (new List<string>{ "Cl", "Cl" })) {
 			return Cl2prefab;
+		} else if (containsExactly (new List<string>{ "Na", "Na", "O" })) {
+		return Na2Oprefab;
 		}
 			
 		return null;	
